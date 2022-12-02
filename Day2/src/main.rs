@@ -10,33 +10,33 @@ fn main() {
 
     //define input
     let mut allGames = input.split("\n");
-    let game = allGames.next().unwrap();
+    
     
     // let mut game_inputs = game.split(" ");
 
     let mut total_score = 0;
 
-    let score = calculate_score("A", "Y");
-    println!("{score}");
-    let score = calculate_score("B", "X");
-    println!("{score}");
-    let score = calculate_score("C", "Z");
-    println!("{score}");
+    // let score = calculate_score("A", "Y");
+    // println!("{score}");
+    // let score = calculate_score("B", "X");
+    // println!("{score}");
+    // let score = calculate_score("C", "Z");
+    // println!("{score}");
 
-    // for game in allGames {
+    for game in allGames {
         
-    //     let mut game_inputs = game.split(" ");
-    //     let elf_input = game_inputs.next().unwrap();
-    //     let my_input = game_inputs.next().unwrap();
+        let mut game_inputs = game.split(" ");
+        let elf_input = game_inputs.next().unwrap();
+        let my_input = game_inputs.next().unwrap();
         
-    //     //calculate score
-    //     let score = calculate_score(elf_input, my_input);
+        //calculate score
+        let score = calculate_score(elf_input, my_input);
 
-    //     // println!("elf input: {elf_input}");
-    //     // println!("my input {my_input}");
-    //     // println!("round score {score}");
-    //     total_score += score;
-    // }
+        println!("elf input: {elf_input}");
+        println!("my input {my_input}");
+        println!("round score {score}");
+        total_score += score;
+    }
 
     println!("Total score: {total_score}");
 }
@@ -61,30 +61,29 @@ fn calculate_score(elf_input : &str, my_input : &str) -> i32
     let drawValue = 3;
     let winValue = 6;
 
+    
     let newscore = if elf_input == elfRock
     {
-        match my_input{
-            myPaper => winValue + paperValue,
-            myScissors => lossValue + scissorsValue,
-            myRock => drawValue + rockValue
-        }
+        if my_input == myPaper {winValue + paperValue}
+        else if my_input == myScissors {lossValue + scissorsValue}
+        else if my_input == myRock {drawValue + rockValue}
+        else {panic!("INVALID INPUT")}
     }
     else if elf_input == elfPaper {
-        match my_input{
-            myPaper => drawValue + paperValue,
-            myScissors => winValue + scissorsValue,
-            myRock => lossValue + rockValue
-        }
+        if my_input == myPaper {drawValue + paperValue}
+        else if my_input == myScissors {winValue + scissorsValue}
+        else if my_input == myRock {lossValue + rockValue}
+        else {panic!("INVALID INPUT")}
+
     }
     else { //scissors
-        match my_input{
-            myPaper => lossValue + paperValue,
-            myScissors => drawValue + scissorsValue,
-            myRock => winValue + rockValue
-        }
+        if my_input == myPaper {lossValue + paperValue}
+        else if my_input == myScissors {drawValue + scissorsValue}
+        else if my_input == myRock {winValue + rockValue}
+        else {panic!("INVALID INPUT")}
+
     };
 
-    println!("score: {newscore}, {elf_input},{my_input}");
     newscore
 
 }
