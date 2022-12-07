@@ -7,33 +7,32 @@ fn main() {
     //define input
     let all_lines = input.split("\n");
 
-    // let mut vec = Vec::new();
-    let mut common_items : HashSet<char> = HashSet::new();
-    let mut badges = "";
+    let mut badges: Vec<char> = Vec::new();
     let mut sum = 0;
-    let mut badges_sum = 0;
+    let mut counter = 1;
 
+    let mut lastline = String::from("");
     for line in all_lines {
-        let line_items: HashSet<char>  = line.chars().collect();
-        // vec.push(line);
-        // if vec.len() == 3 {
-        //     let bag1 ::HashSet = vec.pop().unwrap().chars().collect();
-        //     let bag2 = vec.pop().unwrap().chars().collect();
-        //     let bag3 = vec.pop().unwrap().chars().collect();
-            
-            
-            
-            
-        // }
 
-        if common_items.is_empty() {
-            common_items = line_items;
+        if !lastline.is_empty(){
+
+            lastline = find_common_item1(&lastline, line);
+
+            if counter % 3 == 0 {
+                let badge = lastline.chars().next().unwrap();
+    
+                badges.push(badge);
+                lastline.clear();
+                counter = 0;
+                print!("Badge: {badge} reset: ");
+            }
         }
-        else if common_items.len() == 1 {
-            let a = common_items.drain().next().unwrap();
-            badges_sum += score( a);
+        else{
+            lastline = line.to_owned();
         }
-        
+        counter+=1;
+        println!("LAST LINE: {lastline}");
+
         
 
 
@@ -54,7 +53,13 @@ fn main() {
         println!("Score: {item_score}\n\n");
     }
 
+    let mut badge_sum = 0;
+    for badge in badges {
+        badge_sum += score(badge);
+    }
+
     println!("Score: {sum}");
+    println!("Badge score: {badge_sum}");
 }
 
 fn find_common_item(line: &str, half: usize) -> char {
@@ -68,6 +73,19 @@ fn find_common_item(line: &str, half: usize) -> char {
         }
     
     }
+    matching_item
+}
+
+
+fn find_common_item1(pocket1: &str, pocket2: &str) -> String{
+    let mut matching_item = String::from("");
+    for item in pocket1.chars() {
+    
+        if pocket2.contains(item) {
+            matching_item.push(item)
+        }
+    
+    }
     println!("Pocket 1: {pocket1}");
     println!("Pocket 2: {pocket2}");
     matching_item
@@ -75,9 +93,10 @@ fn find_common_item(line: &str, half: usize) -> char {
 
 
 
+
+
 fn score(item : char) -> i32
 {
-
     if item.is_uppercase() {
         item as i32 - 'A' as i32 + 27
     }
@@ -85,5 +104,4 @@ fn score(item : char) -> i32
         item as i32 - 'a' as i32 + 1
     }
     else{0}
-
 }
